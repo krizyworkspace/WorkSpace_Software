@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pending Work - Sri Lakshmi Mobiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:#c1e0f7;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    nav {
+      width: 100vw;
+      background-color: #156064;
+      color: white;
+      padding: 1.2rem 2rem;
+      font-weight: bold;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-sizing: border-box;
+    }
+    .nav-link.active { background: #ffd166; color: #156064; }
+    .nav-link:hover { background: #f9f9f9; color: #156064; }
+    .nav-right { display: flex; gap: 1.2rem; }
+    .nav-link {
+      color: #ffd166;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    footer {
+      width: 100vw; 
+      color: rgb(59, 59, 59);
+      text-align: center;
+      padding: 1.2rem 0;
+      font-size: 1rem;
+      user-select: none;
+      letter-spacing: 1px;
+      margin-top: 2rem;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+    .main-content {
+      flex: 1 0 auto;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 { margin-top: 2rem; color: #34495e; text-align: center; }
+    section {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1rem;
+    }
+    section h2 {
+      margin-bottom: 1rem;
+      user-select: none;
+      color: #c0392b;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .section-date {
+      font-size: 1rem;
+      color: #888;
+      font-weight: normal;
+      margin-left: 1.5rem;
+    }
+    .work-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      table-layout: fixed;
+    }
+    .work-table th, .work-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 1rem;
+      word-break: break-word;
+    }
+    .work-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+      font-weight: bold;
+      text-align: center;
+    }
+    .work-table th:first-child,
+    .work-table td:first-child {
+      text-align: left;
+      padding-left: 16px;
+      width: 40px;
+    }
+    .work-table th.desc-cell,
+    .work-table td.desc-cell {
+      text-align: left;
+      padding-left: 8px; /* Small gap between # and description */
+    }
+    .work-table th.amount-cell,
+    .work-table td.amount-cell {
+      text-align: right;
+    }
+    .status.Done { background-color: #27ae60; color: white; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.95rem;}
+    .status.Pending { background-color: #e67e22; color: white; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.95rem;}
+    .deleteBtn {
+      background-color: #c0392b;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      padding: 0.2rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      user-select: none;
+      margin-left: 0.7rem;
+      transition: background 0.2s;
+    }
+    .deleteBtn:hover {
+      background-color: #e74c3c;
+    }
+    @media (max-width: 900px) {
+      .main-content { max-width: 98vw; }
+      .work-table th, .work-table td { font-size: 0.98rem; padding: 0.5rem 0.3rem; }
+    }
+    @media (max-width: 600px) {
+      nav, footer { font-size: 1rem; padding: 0.9rem 0.5rem; }
+      .nav-left { font-size: 1.1rem; }
+      .nav-right { gap: 0.7rem; }
+      .nav-link { font-size: 1rem; padding: 0.2rem 0.5rem; }
+      .main-content { padding: 0 0.5rem 3rem; }
+      .work-table th, .work-table td { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
+    }
+    @media (max-width: 480px) {
+      .work-table th, .work-table td { font-size: 0.91rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Sri Lakshmi Mobiles</div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="page2.html" class="nav-link">Progess</a>
+      <a href="page3.html" class="nav-link active">Unsettled</a>
+      <a href="page4.html" class="nav-link">Stock</a>
+      <a href="page5.html" class="nav-link">Earning</a>
+      <a href="page6.html" class="nav-link">wages</a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <h1>Yesterday's Pending Work</h1>
+    <section id="pendingWorkSection">
+      <h2>
+        Pending Work
+        <span class="section-date" id="pendingDate"></span>
+      </h2>
+      <table class="work-table" id="pendingWorkTable">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:16px;">#</th>
+            <th class="desc-cell" style="text-align:left; padding-left:8px;">Description</th>
+            <th class="amount-cell" style="text-align:right;">Received (₹)</th>
+            <th class="amount-cell" style="text-align:right;">Pending (₹)</th>
+            <th style="text-align:center;">Status</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="pendingWorkList"></tbody>
+      </table>
+    </section>
+  </div>
+  <footer>
+    &copy; Reserved to krizy.com.
+  </footer>
+  <script>
+    // Set the date at the top (yesterday's date)
+    function getYesterdayDate() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return d.toLocaleDateString('en-GB');
+    }
+    document.getElementById('pendingDate').textContent = getYesterdayDate();
+
+    // Render the pending work table
+    function renderPendingWorks() {
+      const pendingWorks = JSON.parse(localStorage.getItem('yesterdayPendingWorks') || '[]');
+      const pendingWorkList = document.getElementById('pendingWorkList');
+      pendingWorkList.innerHTML = '';
+      if (pendingWorks.length === 0) {
+        pendingWorkList.innerHTML = `<tr><td colspan="6" style="color:#888;">No pending works.</td></tr>`;
+        return;
+      }
+      pendingWorks.forEach((work, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:left; padding-left:16px;">${idx + 1}</td>
+          <td class="desc-cell" style="text-align:left; padding-left:8px;">${work.description}</td>
+          <td class="amount-cell">${work.received || 0}</td>
+          <td class="amount-cell">${work.pending || 0}</td>
+          <td style="text-align:center;">
+            <span class="status ${work.status}">${work.status || 'Pending'}</span>
+          </td>
+          <td style="text-align:center;">
+            <button class="deleteBtn" onclick="deletePendingWork(${work.id})">Delete</button>
+          </td>
+        `;
+        pendingWorkList.appendChild(tr);
+      });
+    }
+
+    // Delete a pending work by id
+    function deletePendingWork(id) {
+      let pendingWorks = JSON.parse(localStorage.getItem('yesterdayPendingWorks') || '[]');
+      pendingWorks = pendingWorks.filter(work => work.id !== id);
+      localStorage.setItem('yesterdayPendingWorks', JSON.stringify(pendingWorks));
+      renderPendingWorks();
+    }
+
+    // For demo/testing: If your pending works have no id, add one
+    function ensurePendingWorksHaveId() {
+      let pendingWorks = JSON.parse(localStorage.getItem('yesterdayPendingWorks') || '[]');
+      let changed = false;
+      pendingWorks.forEach(work => {
+        if (!work.id) {
+          work.id = Date.now() + Math.floor(Math.random() * 10000);
+          changed = true;
+        }
+      });
+      if (changed) {
+        localStorage.setItem('yesterdayPendingWorks', JSON.stringify(pendingWorks));
+      }
+    }
+    ensurePendingWorksHaveId();
+    renderPendingWorks();
+
+    // Expose delete function to global scope
+    window.deletePendingWork = deletePendingWork;
+  </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Income - Sri Lakshmi Mobiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:#c1e0f7;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    nav {
+      width: 100vw;
+      background-color: #156064;
+      color: white;
+      padding: 1.2rem 2rem;
+      font-weight: bold;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-sizing: border-box;
+    }
+    .nav-link.active { background: #ffd166; color: #156064; }
+    .nav-link:hover { background: #f9f9f9; color: #156064; }
+    .nav-right { display: flex; gap: 1.2rem; }
+    .nav-link {
+      color: #ffd166;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    footer {
+      width: 100vw; 
+      color: rgb(59, 59, 59);
+      text-align: center;
+      padding: 1.2rem 0;
+      font-size: 1rem;
+      user-select: none;
+      letter-spacing: 1px;
+      margin-top: 2rem;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+    .main-content {
+      flex: 1 0 auto;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 { margin-top: 2rem; color: #34495e; text-align: center; }
+    section {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1rem;
+    }
+    section h2 {
+      margin-bottom: 1rem;
+      user-select: none;
+      color: #27ae60;
+    }
+    .income-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      table-layout: fixed;
+    }
+    .income-table th, .income-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 1rem;
+      word-break: break-word;
+      text-align: center;
+    }
+    .income-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+      font-weight: bold;
+    }
+    .income-table th:first-child, .income-table td:first-child {
+      text-align: left;
+      padding-left: 16px;
+      width: 40px;
+    }
+    .income-table th.date-cell, .income-table td.date-cell {
+      text-align: left;
+      padding-left: 8px;
+      font-weight: bold;
+    }
+    .expandBtn {
+      border: none;
+      border-radius: 4px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.97rem;
+      cursor: pointer;
+      background: #27ae60;
+      color: #fff;
+      margin-left: 0.6rem;
+      transition: background 0.2s;
+    }
+    .expandBtn:hover { background: #219653; }
+    .details-row {
+      background: #f9f9f9;
+    }
+    .details-table {
+      width: 95%;
+      margin: 0.5rem auto 1rem auto;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .details-table th, .details-table td {
+      padding: 0.4rem 0.7rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 0.97rem;
+      text-align: left;
+    }
+    .details-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+    }
+    .details-table tfoot td {
+      font-weight: bold;
+      color: #27ae60;
+      background: #f4f8fb;
+    }
+    .pending-amount {
+      color: #e67e22;
+      font-weight: bold;
+    }
+    @media (max-width: 900px) {
+      .main-content { max-width: 98vw; }
+      .income-table th, .income-table td { font-size: 0.98rem; padding: 0.5rem 0.3rem; }
+    }
+    @media (max-width: 600px) {
+      nav, footer { font-size: 1rem; padding: 0.9rem 0.5rem; }
+      .nav-left { font-size: 1.1rem; }
+      .nav-right { gap: 0.7rem; }
+      .nav-link { font-size: 1rem; padding: 0.2rem 0.5rem; }
+      .main-content { padding: 0 0.5rem 3rem; }
+      .income-table th, .income-table td { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
+    }
+    @media (max-width: 480px) {
+      .income-table th, .income-table td { font-size: 0.91rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Sri Lakshmi Mobiles</div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="page2.html" class="nav-link">Progess</a>
+      <a href="page3.html" class="nav-link">Unsettled</a>
+      <a href="page4.html" class="nav-link">Stock</a>
+      <a href="page5.html" class="nav-link active">Earning</a>
+      <a href="page6.html" class="nav-link">wages</a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <h1>Income History</h1>
+    <section>
+      <h2>Completed Days</h2>
+      <table class="income-table" id="incomeTable">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:16px;">#</th>
+            <th class="date-cell" style="text-align:left; padding-left:8px;">Date</th>
+            <th style="text-align:center;">Total Received (₹)</th>
+            <th style="text-align:center;">Total Pending (₹)</th>
+            <th style="text-align:center;">Details</th>
+          </tr>
+        </thead>
+        <tbody id="incomeList"></tbody>
+      </table>
+    </section>
+  </div>
+  <footer>
+    &copy; Reserved to krizy.com.
+  </footer>
+  <script>
+    // Load completed days from localStorage
+    function loadCompletedDays() {
+      return JSON.parse(localStorage.getItem('completedDays') || '[]');
+    }
+
+    function sum(arr, key) {
+      return arr.reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
+    }
+
+    function renderIncome() {
+      const incomeList = document.getElementById('incomeList');
+      const completedDays = loadCompletedDays();
+      incomeList.innerHTML = '';
+      if (completedDays.length === 0) {
+        incomeList.innerHTML = `<tr><td colspan="5" style="color:#888;">No completed days yet.</td></tr>`;
+        return;
+      }
+      completedDays.slice().reverse().forEach((day, idx) => {
+        const totalReceived = sum(day.works || [], 'received');
+        const totalPending = sum(day.works || [], 'pending');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:left; padding-left:16px;">${completedDays.length - idx}</td>
+          <td class="date-cell" style="text-align:left; padding-left:8px;">${formatDate(day.date)}</td>
+          <td>${totalReceived}</td>
+          <td class="pending-amount">${totalPending}</td>
+          <td>
+            <button class="expandBtn" onclick="toggleDetails(this, ${completedDays.length - idx - 1})">Show</button>
+          </td>
+        `;
+        incomeList.appendChild(tr);
+      });
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString('en-GB');
+    }
+
+    function toggleDetails(btn, idx) {
+      const tr = btn.closest('tr');
+      const table = document.getElementById('incomeList');
+      // Remove any open details row
+      const open = table.querySelector('.details-row');
+      if (open) open.remove();
+      // If already open, just close
+      if (btn.textContent === 'Hide') {
+        btn.textContent = 'Show';
+        return;
+      }
+      // Otherwise, show details
+      btn.textContent = 'Hide';
+      const completedDays = loadCompletedDays();
+      const day = completedDays.slice().reverse()[idx];
+      const detailsTr = document.createElement('tr');
+      detailsTr.className = 'details-row';
+      let html = `<td colspan="5">
+        <div>
+          <strong>Works:</strong>
+          <table class="details-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Received (₹)</th>
+                <th>Pending (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${
+                (day.works && day.works.length)
+                ? day.works.map((w, i) => `
+                  <tr>
+                    <td>${i+1}</td>
+                    <td>${w.description}</td>
+                    <td>${w.received || 0}</td>
+                    <td>${w.pending || 0}</td>
+                  </tr>
+                `).join('')
+                : `<tr><td colspan="4" style="color:#888;">No works.</td></tr>`
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align:right;">Total:</td>
+                <td>${sum(day.works||[], 'received')}</td>
+                <td>${sum(day.works||[], 'pending')}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div style="margin-top:1rem;">
+          <strong>Dues:</strong>
+          <table class="details-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Pending (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${
+                (day.dues && day.dues.length)
+                ? day.dues.map((d, i) => `
+                  <tr>
+                    <td>${i+1}</td>
+                    <td>${d.description}</td>
+                    <td>${d.pending || 0}</td>
+                  </tr>
+                `).join('')
+                : `<tr><td colspan="3" style="color:#888;">No dues.</td></tr>`
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align:right;">Total:</td>
+                <td>${sum(day.dues||[], 'pending')}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </td>`;
+      detailsTr.innerHTML = html;
+      tr.after(detailsTr);
+    }
+
+    renderIncome();
+    window.toggleDetails = toggleDetails;
+  </script>
+</body>
+</html>

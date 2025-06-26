@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Work - Sri Lakshmi Mobiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="page2.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Sri Lakshmi Mobiles</div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="page2.html" class="nav-link active">Progess</a>
+      <a href="page3.html" class="nav-link">Unsettled</a>
+      <a href="page4.html" class="nav-link">Stock</a>
+      <a href="page5.html" class="nav-link">Earning</a>
+      <a href="page6.html" class="nav-link">wages</a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <header>
+      Yesterday pending works show.
+      <a href="page3.html" aria-label="Go to yesterday pending works page">View here</a>
+    </header>
+    <h1>Add Today's Work</h1>
+    <form id="workForm" aria-label="Add today's work form">
+      <input type="text" id="workInput" placeholder="Enter today's work description" required aria-required="true" />
+      <button type="button" class="done" aria-label="Add work as Done">Done</button>
+      <button type="button" class="pending" aria-label="Add work as Pending">Pending</button>
+    </form>
+    <!-- Amount Modal -->
+    <div id="amountModal">
+      <div class="modal-content">
+        <button class="closeBtn" title="Close">&times;</button>
+        <label for="receivedAmount">Received Amount (₹)</label>
+        <input type="number" id="receivedAmount" min="0" placeholder="Received Amount" required />
+        <label for="pendingAmount">Pending Amount (₹)</label>
+        <input type="number" id="pendingAmount" min="0" placeholder="Pending Amount" required />
+        <button type="button" id="amountSubmitBtn">Done</button>
+      </div>
+    </div>
+    <section id="todayWorkList">
+      <h2>Today's Work List</h2>
+      <table class="work-table" id="workTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="desc-cell" style="text-align:left;">Description</th>
+            <th>Received (₹)</th>
+            <th>Pending (₹)</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="workList"></tbody>
+      </table>
+    </section>
+    <section id="itemsUsedSection">
+      <h2>Items Used Today</h2>
+      <form id="itemsUsedForm" aria-label="Items used form">
+        <input type="text" id="usedItemName" placeholder="Item name" required />
+        <input type="number" id="usedItemQty" placeholder="Quantity" min="1" required />
+        <button type="submit" class="item-used">Use Item</button>
+      </form>
+      <ol id="usedItemsList" style="margin-top:1rem;"></ol>
+    </section>
+    <section id="todayPaymentsSection">
+    <h2>Today's Payments</h2>
+    <table class="work-table" id="paymentsTable">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding-left:16px;">#</th>
+          <th class="desc-cell" style="text-align:left; padding-left:16px;">Description</th>
+          <th class="amount-cell" style="text-align:right;">Received (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="paymentsList"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2" style="text-align:right; font-weight:bold; padding-right:16px;">Total Received:</td>
+          <td class="amount-cell" style="text-align:right; font-weight:bold; color:#27ae60;" id="paymentsTotal"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <section id="todaysDuesSection">
+    <h2>Today's Dues</h2>
+    <table class="work-table" id="duesTable">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding-left:16px;">#</th>
+          <th class="desc-cell" style="text-align:left; padding-left:16px;">Description</th>
+          <th class="amount-cell" style="text-align:right;">Pending (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="duesList"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2" style="text-align:right; font-weight:bold; padding-right:16px;">Total Pending:</td>
+          <td class="amount-cell" style="text-align:right; font-weight:bold; color:#e67e22;" id="duesTotal"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+    <section id="pendingWorkSection">
+      <h2>Pending Work</h2>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="desc-cell" style="text-align:left;">Description</th>
+            <th>Received (₹)</th>
+            <th>Pending (₹)</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="pendingWorkList"></tbody>
+      </table>
+    </section>
+  </div> 
+<!-- Complete Work Button (place above your <footer>) -->
+<button id="completeWorkBtn">Complete Work</button>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal">
+  <div class="modal-content-confirm">
+    <h3>Are you sure you want to complete today's work?</h3>
+    <p>This will transfer all data to Income and Pending pages.</p>
+    <div class="modal-buttons">
+      <button class="cancel-btn">No</button>
+      <button class="confirm-btn">Yes, Complete</button>
+    </div>
+  </div>
+</div>
+
+  <footer>
+    &copy; Reserved to krizy.com.
+  </footer>
+  <script src="Page2.js"></script>
+</body>
+</html>

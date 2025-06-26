@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Store - Sri Lakshmi Mobiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:#c1e0f7;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    nav {
+      width: 100vw;
+      background-color: #156064;
+      color: white;
+      padding: 1.2rem 2rem;
+      font-weight: bold;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-sizing: border-box;
+    }
+    .nav-link.active { background: #ffd166; color: #156064; }
+    .nav-link:hover { background: #f9f9f9; color: #156064; }
+    .nav-right { display: flex; gap: 1.2rem; }
+    .nav-link {
+      color: #ffd166;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    footer {
+      width: 100vw; 
+      color: rgb(59, 59, 59);
+      text-align: center;
+      padding: 1.2rem 0;
+      font-size: 1rem;
+      user-select: none;
+      letter-spacing: 1px;
+      margin-top: 2rem;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+    .main-content {
+      flex: 1 0 auto;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 { margin-top: 2rem; color: #34495e; text-align: center; }
+    section {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1rem;
+    }
+    section h2 {
+      margin-bottom: 1rem;
+      user-select: none;
+      color: #2980b9;
+    }
+    .store-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      table-layout: fixed;
+    }
+    .store-table th, .store-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 1rem;
+      word-break: break-word;
+      text-align: center;
+    }
+    .store-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+      font-weight: bold;
+    }
+    .store-table th:first-child, .store-table td:first-child {
+      text-align: left;
+      padding-left: 16px;
+      width: 40px;
+    }
+    .store-table th.name-cell, .store-table td.name-cell {
+      text-align: left;
+      padding-left: 8px;
+    }
+    .deleteBtn {
+      border: none;
+      border-radius: 4px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.97rem;
+      cursor: pointer;
+      background: #c0392b;
+      color: #fff;
+      margin-left: 0.6rem;
+      transition: background 0.2s;
+    }
+    .deleteBtn:hover { background: #e74c3c; }
+    .add-form {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .add-form input[type="text"], .add-form input[type="number"] {
+      padding: 0.4rem 0.7rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      min-width: 150px;
+    }
+    .add-form button {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-form button:hover {
+      background: #219653;
+    }
+    .alert-row {
+      background: #ffeaea important;
+      color: #c0392b;
+      font-weight: bold;
+    }
+    @media (max-width: 900px) {
+      .main-content { max-width: 98vw; }
+      .store-table th, .store-table td { font-size: 0.98rem; padding: 0.5rem 0.3rem; }
+    }
+    @media (max-width: 600px) {
+      nav, footer { font-size: 1rem; padding: 0.9rem 0.5rem; }
+      .nav-left { font-size: 1.1rem; }
+      .nav-right { gap: 0.7rem; }
+      .nav-link { font-size: 1rem; padding: 0.2rem 0.5rem; }
+      .main-content { padding: 0 0.5rem 3rem; }
+      .store-table th, .store-table td { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
+      .add-form { flex-direction: column; align-items: stretch; }
+      .add-form input, .add-form button { width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .store-table th, .store-table td { font-size: 0.91rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Sri Lakshmi Mobiles</div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="page2.html" class="nav-link">Progess</a>
+      <a href="page3.html" class="nav-link">Unsettled</a>
+      <a href="page4.html" class="nav-link active">Stock</a>
+      <a href="page5.html" class="nav-link">Earning</a>
+      <a href="page6.html" class="nav-link">wages</a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <h1>Store Items</h1>
+    <section>
+      <h2>Manage Store</h2>
+      <form class="add-form" id="addStoreForm" autocomplete="off">
+        <input type="text" id="itemName" placeholder="Item Name" required />
+        <input type="number" id="itemStock" placeholder="Stock" min="0" required />
+        <button type="submit">Add Item</button>
+      </form>
+      <table class="store-table" id="storeTable">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:16px;">#</th>
+            <th class="name-cell" style="text-align:left; padding-left:8px;">Name</th>
+            <th style="text-align:center;">Stock</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="storeList"></tbody>
+      </table>
+    </section>
+  </div>
+  <footer>
+    &copy; Reserved to krizy.com.
+  </footer>
+  <script>
+    const STORE_KEY = 'storeItems';
+
+    function loadStoreItems() {
+      return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    }
+    function saveStoreItems(items) {
+      localStorage.setItem(STORE_KEY, JSON.stringify(items));
+    }
+
+    function renderStore() {
+      const storeList = document.getElementById('storeList');
+      const items = loadStoreItems();
+      storeList.innerHTML = '';
+      if (items.length === 0) {
+        storeList.innerHTML = `<tr><td colspan="4" style="color:#888;">No items in store.</td></tr>`;
+        return;
+      }
+      items.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        if (item.stock < 2) {
+          tr.classList.add('alert-row');
+        }
+        tr.innerHTML = `
+          <td style="text-align:left; padding-left:16px;">${idx + 1}</td>
+          <td class="name-cell" style="text-align:left; padding-left:8px;">${item.name}</td>
+          <td>${item.stock}</td>
+          <td>
+            <button class="deleteBtn" onclick="deleteStoreItem(${item.id})">Delete</button>
+          </td>
+        `;
+        storeList.appendChild(tr);
+      });
+    }
+
+    document.getElementById('addStoreForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('itemName').value.trim();
+      const stock = Number(document.getElementById('itemStock').value);
+      if (!name) {
+        alert('Please enter item name.');
+        return;
+      }
+      if (isNaN(stock) || stock < 0) {
+        alert('Please enter valid stock.');
+        return;
+      }
+      let items = loadStoreItems();
+      if (items.some(i => i.name.toLowerCase() === name.toLowerCase())) {
+        alert('Item already exists.');
+        return;
+      }
+      items.push({
+        id: Date.now() + Math.floor(Math.random() * 10000),
+        name,
+        stock
+      });
+      saveStoreItems(items);
+      this.reset();
+      renderStore();
+    });
+
+    function deleteStoreItem(id) {
+      if (!confirm('Are you sure you want to delete this item?')) return;
+      let items = loadStoreItems();
+      items = items.filter(i => i.id !== id);
+      saveStoreItems(items);
+      renderStore();
+    }
+
+    window.deleteStoreItem = deleteStoreItem;
+
+    function ensureStoreItemsHaveId() {
+      let items = loadStoreItems();
+      let changed = false;
+      items.forEach(i => {
+        if (!i.id) {
+          i.id = Date.now() + Math.floor(Math.random() * 10000);
+          changed = true;
+        }
+      });
+      if (changed) saveStoreItems(items);
+    }
+    ensureStoreItemsHaveId();
+    renderStore();
+
+    // Listen for storage changes from Buy page (if open in another tab)
+    window.addEventListener('storage', function(e) {
+      if (e.key === STORE_KEY) renderStore();
+    });
+  </script>
+</body>
+</html>

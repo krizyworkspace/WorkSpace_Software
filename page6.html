@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Buy - Sri Lakshmi Mobiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:#c1e0f7;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    nav {
+      width: 100vw;
+      background-color: #156064;
+      color: white;
+      padding: 1.2rem 2rem;
+      font-weight: bold;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-sizing: border-box;
+    }
+    .nav-left { font-size: 1.4rem; font-weight: bold; user-select: none; }
+    .nav-right { display: flex; gap: 1.2rem; }
+    .nav-link {
+      color: #ffd166;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-link.active { background: #ffd166; color: #156064; }
+    .nav-link:hover { background: #f9f9f9; color: #156064; }
+    footer {
+      width: 100vw; 
+      color: rgb(59, 59, 59);
+      text-align: center;
+      padding: 1.2rem 0;
+      font-size: 1rem;
+      user-select: none;
+      letter-spacing: 1px;
+      margin-top: 2rem;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+    .main-content {
+      flex: 1 0 auto;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 { margin-top: 2rem; color: #34495e; text-align: center; }
+    section {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1rem;
+    }
+    section h2 {
+      margin-bottom: 1rem;
+      user-select: none;
+      color: #c0392b;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .buy-form {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .buy-form input[type="text"], .buy-form input[type="number"], .buy-form input[type="date"] {
+      padding: 0.4rem 0.7rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      min-width: 120px;
+    }
+    .buy-form button {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .buy-form button:hover {
+      background: #219653;
+    }
+    .buy-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      table-layout: fixed;
+    }
+    .buy-table th, .buy-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 1rem;
+      word-break: break-word;
+      text-align: center;
+    }
+    .buy-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+      font-weight: bold;
+    }
+    .buy-table th:first-child, .buy-table td:first-child {
+      text-align: left;
+      padding-left: 16px;
+      width: 40px;
+    }
+    .buy-table th.name-cell, .buy-table td.name-cell {
+      text-align: left;
+      padding-left: 8px;
+    }
+    .deleteBtn, .addStoreBtn {
+      border: none;
+      border-radius: 4px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.97rem;
+      cursor: pointer;
+      margin-left: 0.6rem;
+      transition: background 0.2s;
+    }
+    .deleteBtn {
+      background: #c0392b;
+      color: #fff;
+    }
+    .deleteBtn:hover { background: #e74c3c; }
+    .addStoreBtn {
+      background: #2980b9;
+      color: #fff;
+    }
+    .addStoreBtn.added {
+      background: #27ae60;
+      color: #fff;
+      cursor: default;
+    }
+    .addStoreBtn:hover:not(.added) { background: #206090; }
+    /* Monthly section */
+    .monthly-section {
+      margin-top: 2.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1rem;
+    }
+    .monthly-table, .pdf-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      table-layout: fixed;
+    }
+    .monthly-table th, .monthly-table td, .pdf-table th, .pdf-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 1rem;
+      text-align: center;
+    }
+    .monthly-table th, .pdf-table th {
+      background: #f4f8fb;
+      color: #2980b9;
+      font-weight: bold;
+    }
+    .monthly-table th:first-child, .monthly-table td:first-child,
+    .pdf-table th:first-child, .pdf-table td:first-child {
+      text-align: left;
+      padding-left: 16px;
+      width: 40px;
+    }
+    .monthly-table th.month-cell, .monthly-table td.month-cell,
+    .pdf-table th.month-cell, .pdf-table td.month-cell {
+      text-align: left;
+      padding-left: 8px;
+    }
+    .monthly-table tfoot td, .pdf-table tfoot td {
+      font-weight: bold;
+      background: #f4f8fb;
+      color: #27ae60;
+    }
+    .resetBtn {
+      margin-top: 1.5rem;
+      padding: 0.7rem 2.2rem;
+      font-size: 1.1rem;
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .resetBtn:hover { background: #e74c3c; }
+    .pdf-section-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #156064;
+      margin: 1.2rem 0 0.7rem 0;
+      text-align: left;
+    }
+    @media (max-width: 900px) {
+      .main-content { max-width: 98vw; }
+      .buy-table th, .buy-table td, .monthly-table th, .monthly-table td, .pdf-table th, .pdf-table td { font-size: 0.98rem; padding: 0.5rem 0.3rem; }
+    }
+    @media (max-width: 600px) {
+      nav, footer { font-size: 1rem; padding: 0.9rem 0.5rem; }
+      .nav-left { font-size: 1.1rem; }
+      .nav-right { gap: 0.7rem; }
+      .nav-link { font-size: 1rem; padding: 0.2rem 0.5rem; }
+      .main-content { padding: 0 0.5rem 3rem; }
+      .buy-table th, .buy-table td, .monthly-table th, .monthly-table td, .pdf-table th, .pdf-table td { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
+      .buy-form { flex-direction: column; align-items: stretch; }
+      .buy-form input, .buy-form button { width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .buy-table th, .buy-table td, .monthly-table th, .monthly-table td, .pdf-table th, .pdf-table td { font-size: 0.91rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Sri Lakshmi Mobiles</div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="page2.html" class="nav-link">Progess</a>
+      <a href="page3.html" class="nav-link">Unsettled</a>
+      <a href="page4.html" class="nav-link">Stock</a>
+      <a href="page5.html" class="nav-link">Earning</a>
+      <a href="page6.html" class="nav-link active">wages</a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <h1>Purchases / Buy Items</h1>
+    <section>
+      <h2>Add Purchase</h2>
+      <form class="buy-form" id="buyForm" autocomplete="off">
+        <input type="text" id="buyName" placeholder="Item Name" required />
+        <input type="number" id="buyQty" placeholder="Quantity" min="1" required />
+        <input type="number" id="buyAmount" placeholder="Amount (₹)" min="0" required />
+        <input type="date" id="buyDate" required />
+        <button type="submit">Add</button>
+      </form>
+      <table class="buy-table" id="buyTable">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:16px;">#</th>
+            <th class="name-cell" style="text-align:left; padding-left:8px;">Item Name</th>
+            <th style="text-align:center;">Quantity</th>
+            <th style="text-align:center;">Amount (₹)</th>
+            <th style="text-align:center;">Date</th>
+            <th style="text-align:center;">Add to Store</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="buyList"></tbody>
+      </table>
+    </section>
+    <section class="monthly-section">
+      <h2>This Monthly Purchase/Income</h2>
+      <div id="monthlyTableContainer">
+        <table class="monthly-table" id="monthlyTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th class="month-cell">Month</th>
+              <th>Purchase (₹)</th>
+              <th>Income (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="monthlyList"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="text-align:right;">Total:</td>
+              <td id="totalPurchase"></td>
+              <td id="totalIncome"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <button class="resetBtn" onclick="resetData()">Reset Data</button>
+    </section>
+    <!-- Hidden containers for PDF rendering -->
+    <div id="pdf-content" style="display:none; padding:20px; background:#fff; color:#222; max-width:800px;">
+      <div id="pdf-monthly"></div>
+      <div id="pdf-pending"></div>
+      <div id="pdf-store"></div>
+    </div>
+  </div>
+  <footer>
+    &copy; Reserved to krizy.com.
+  </footer>
+  <script src="page6.js"></script>
+</body>
+</html>
