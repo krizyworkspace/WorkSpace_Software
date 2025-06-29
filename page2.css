@@ -31,7 +31,7 @@ html, body { height: 100%; margin: 0; padding: 0; }
       font-weight: 500;
       padding: 0.3rem 0.8rem;
       border-radius: 5px;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.9s, color 0.2s;
     }
     .nav-link.active { background: #ffd166; color: #156064; }
     .nav-link:hover { background: #f9f9f9; color: #156064; }
@@ -45,11 +45,11 @@ html, body { height: 100%; margin: 0; padding: 0; }
       letter-spacing: 1px;
       margin-top: 2rem;
       box-sizing: border-box;
-      font-weight: bold;
+      font-weight: 300;
     }
     .main-content {
       flex: 1 0 auto;
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       width: 100%;
       box-sizing: border-box;
@@ -159,32 +159,28 @@ html, body { height: 100%; margin: 0; padding: 0; }
       color: #2980b9;
     }
     /* Work List Table */
-    .work-table, .simple-table {
+    .work-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
     }
-    .work-table th, .work-table td,
-    .simple-table th, .simple-table td {
+    .work-table th, .work-table td{
       padding: 0.6rem 0.8rem;
       border-bottom: 1px solid #eaeaea;
       font-size: 1rem;
     }
-    .work-table th, .simple-table th {
+    .work-table th{
       background: #f4f8fb;
       color: #2980b9;
       font-weight: bold;
     }
-    .work-table th, .work-table td,
-    .simple-table th, .simple-table td {
+    .work-table th, .work-table td{
       text-align: center;
     }
-    .work-table th.desc-cell, .work-table td.desc-cell,
-    .simple-table th.desc-cell, .simple-table td.desc-cell {
+    .work-table th.desc-cell, .work-table td.desc-cell{
       text-align: left;
     }
-    .work-table th.amount-cell, .work-table td.amount-cell,
-    .simple-table th.amount-cell, .simple-table td.amount-cell {
+    .work-table th.amount-cell, .work-table td.amount-cell{
       text-align: right;
     }
     .status.Done { background-color: #27ae60; color: white; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.95rem;}
@@ -252,7 +248,7 @@ html, body { height: 100%; margin: 0; padding: 0; }
   #completeWorkBtn {
   display: block;
   margin: 2rem 0 0 auto;
-  padding: 1rem 2.2rem;
+  padding: 1rem 1.5rem;
   font-size: 1.1rem;
   background-color: #27ae60;
   color: white;
@@ -311,8 +307,7 @@ html, body { height: 100%; margin: 0; padding: 0; }
 
     @media (max-width: 900px) {
       .main-content { max-width: 98vw; }
-      .work-table th, .work-table td,
-      .simple-table th, .simple-table td { font-size: 0.98rem; padding: 0.5rem 0.3rem; }
+      .work-table th, .work-table td{ font-size: 0.98rem; padding: 0.5rem 0.3rem; }
     }
     @media (max-width: 600px) {
       nav, footer { font-size: 1rem; padding: 0.9rem 0.5rem; }
@@ -320,8 +315,7 @@ html, body { height: 100%; margin: 0; padding: 0; }
       .nav-right { gap: 0.7rem; }
       .nav-link { font-size: 1rem; padding: 0.2rem 0.5rem; }
       .main-content { padding: 0 0.5rem 3rem; }
-      .work-table th, .work-table td,
-      .simple-table th, .simple-table td { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
+      .work-table th, .work-table td  { font-size: 0.92rem; padding: 0.3rem 0.1rem; }
       #completeWorkBtn { right: 1rem; bottom: 1rem; padding: 0.7rem 1rem; font-size: 1rem; }
     }
     @media (max-width: 480px) {
@@ -334,6 +328,4 @@ html, body { height: 100%; margin: 0; padding: 0; }
       button {
         width: 100%;
       }
-      .work-table th, .work-table td,
-      .simple-table th, .simple-table td { font-size: 0.91rem; }
-    }
+      .work-table th, .work-table td { font-size: 0.91rem; }}
