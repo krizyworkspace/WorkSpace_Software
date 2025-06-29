@@ -1,4 +1,4 @@
- // LocalStorage Keys
+    // LocalStorage Keys
     const TODAY_WORK_KEY = 'todayWorks';
     const STORE_KEY = 'storeItems';
     const USED_ITEMS_KEY = 'usedItemsToday';
@@ -6,11 +6,13 @@
     const PENDING_WORK_KEY = 'pendingWorks';
     const YESTERDAY_PENDING_KEY = 'yesterdayPendingWorks';
 
+    // --- Today's Work Section ---
     const workForm = document.getElementById('workForm');
     const workInput = document.getElementById('workInput');
     const doneBtn = workForm.querySelector('button.done');
     const pendingBtn = workForm.querySelector('button.pending');
     const workList = document.getElementById('workList');
+    const workTable = document.getElementById('workTable');
 
     // Modal
     const amountModal = document.getElementById('amountModal');
@@ -19,12 +21,15 @@
     const amountSubmitBtn = document.getElementById('amountSubmitBtn');
     const closeBtn = document.querySelector('.closeBtn');
     let currentWorkDesc = '';
-    let currentAction = '';
+    let currentAction = ''; // 'Done' or 'Pending' or 'MarkDonePending'
     let currentEditId = null;
+    let currentPendingIndex = null;
 
+    // --- Data Load/Save ---
     function loadData(key) { return JSON.parse(localStorage.getItem(key)) || []; }
     function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
+    // --- Render Functions ---
     function renderTodayWorks() {
       const works = loadData(TODAY_WORK_KEY);
       workList.innerHTML = '';
@@ -35,13 +40,45 @@
       works.forEach((work, index) => {
         const tr = document.createElement('tr');
         tr.setAttribute('data-id', work.id);
-        tr.innerHTML =
-          `<td>${index + 1}</td>
-           <td class="desc-cell">${work.description}</td>
-           <td>${work.received || 0}</td>
-           <td>${work.pending || 0}</td>
-           <td class="status-cell"><span class="status ${work.status}">${work.status}</span></td>
-           <td><button class="deleteBtn" onclick="deleteWork('${work.id}')">Delete</button></td>`;
+
+        // Order
+        const tdOrder = document.createElement('td');
+        tdOrder.textContent = index + 1;
+        tr.appendChild(tdOrder);
+
+        // Description
+        const tdDesc = document.createElement('td');
+        tdDesc.textContent = work.description;
+        tr.appendChild(tdDesc);
+
+        // Received
+        const tdReceived = document.createElement('td');
+        tdReceived.textContent = work.received || 0;
+        tr.appendChild(tdReceived);
+
+        // Pending
+        const tdPending = document.createElement('td');
+        tdPending.textContent = work.pending || 0;
+        tr.appendChild(tdPending);
+
+        // Status
+        const tdStatus = document.createElement('td');
+        tdStatus.className = 'status-cell';
+        const statusSpan = document.createElement('span');
+        statusSpan.classList.add('status', work.status);
+        statusSpan.textContent = work.status;
+        tdStatus.appendChild(statusSpan);
+        tr.appendChild(tdStatus);
+
+        // Actions
+        const tdActions = document.createElement('td');
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.className = 'deleteBtn';
+        delBtn.onclick = () => deleteWork(work.id);
+        tdActions.appendChild(delBtn);
+        tr.appendChild(tdActions);
+
         workList.appendChild(tr);
       });
     }
@@ -51,64 +88,58 @@
       const usedItemsList = document.getElementById('usedItemsList');
       usedItemsList.innerHTML = '';
       if (usedItems.length === 0) {
-        usedItemsList.innerHTML = '<li style="color:#888;">No items used yet today.</li>';
+        usedItemsList.innerHTML = '<li>No items used yet today.</li>';
         return;
       }
       usedItems.forEach((item, idx) => {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${idx + 1}. ${item.name}</span>
-          <span class="usedQty">x${item.qty}</span>`;
+        li.textContent = `${idx + 1}. ${item.name} `;
+        const qtySpan = document.createElement('span');
+        qtySpan.className = 'usedQty';
+        qtySpan.textContent = `x${item.qty}`;
+        li.appendChild(qtySpan);
         usedItemsList.appendChild(li);
       });
     }
 
     function renderTodayPayments() {
-  const works = loadData('todayWorks');
-  const paymentsList = document.getElementById('paymentsList');
-  const paymentsTotal = document.getElementById('paymentsTotal');
-  let total = 0;
-  paymentsList.innerHTML = '';
-  let payments = works.filter(w => w.status === 'Done' && Number(w.received) > 0);
-  if (payments.length === 0) {
-    paymentsList.innerHTML = `<tr><td colspan="3" style="color:#888;">No payments received today.</td></tr>`;
-  } else {
-    payments.forEach((w, idx) => {
-      total += Number(w.received) || 0;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td style="text-align:left; padding-left:16px;">${idx + 1}</td>
-        <td class="desc-cell">${w.description}</td>
-        <td class="amount-cell">${w.received}</td>
-      `;
-      paymentsList.appendChild(tr);
-    });
-  }
-  paymentsTotal.textContent = total;
-}
+      const works = loadData(TODAY_WORK_KEY);
+      const paymentsList = document.getElementById('paymentsList');
+      const paymentsTotal = document.getElementById('paymentsTotal');
+      let total = 0;
+      paymentsList.innerHTML = '';
+      let payments = works.filter(w => w.status === 'Done' && Number(w.received) > 0);
+      if (payments.length === 0) {
+        paymentsList.innerHTML = `<tr><td colspan="3" style="color:#888;">No payments received today.</td></tr>`;
+      } else {
+        payments.forEach((w, idx) => {
+          total += Number(w.received) || 0;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="text-align:left;">${idx + 1}</td><td style="text-align:left;">${w.description}</td><td style="text-align:right;">${w.received}</td>`;
+          paymentsList.appendChild(tr);
+        });
+      }
+      paymentsTotal.textContent = `Total Received: ₹${total}`;
+    }
 
-function renderTodaysDues() {
-  const dues = loadData('todaysDues');
-  const duesList = document.getElementById('duesList');
-  const duesTotal = document.getElementById('duesTotal');
-  duesList.innerHTML = '';
-  let total = 0;
-  if (dues.length === 0) {
-    duesList.innerHTML = `<tr><td colspan="3" style="color:#888;">No dues for today.</td></tr>`;
-  } else {
-    dues.forEach((due, idx) => {
-      total += Number(due.pending) || 0;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td style="text-align:left; padding-left:16px;">${idx + 1}</td>
-        <td class="desc-cell">${due.description}</td>
-        <td class="amount-cell">${due.pending}</td>
-      `;
-      duesList.appendChild(tr);
-    });
-  }
-  duesTotal.textContent = total;
-}
-
+    function renderTodaysDues() {
+      const dues = loadData(TODAY_DUES_KEY);
+      const duesList = document.getElementById('duesList');
+      const duesTotal = document.getElementById('duesTotal');
+      duesList.innerHTML = '';
+      let total = 0;
+      if (dues.length === 0) {
+        duesList.innerHTML = `<tr><td colspan="3" style="color:#888;">No dues for today.</td></tr>`;
+      } else {
+        dues.forEach((due, idx) => {
+          total += Number(due.pending) || 0;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="text-align:left;">${idx + 1}</td><td style="text-align:left;">${due.description}</td><td style="text-align:right;">${due.pending}</td>`;
+          duesList.appendChild(tr);
+        });
+      }
+      duesTotal.textContent = `Total Pending: ₹${total}`;
+    }
 
     function renderPendingWorks() {
       const pendingWorks = loadData(PENDING_WORK_KEY);
@@ -121,16 +152,50 @@ function renderTodaysDues() {
       pendingWorks.forEach((work, idx) => {
         const tr = document.createElement('tr');
         tr.setAttribute('data-id', work.id);
-        tr.innerHTML =
-          `<td>${idx + 1}</td>
-           <td class="desc-cell">${work.description}</td>
-           <td>${work.received || 0}</td>
-           <td>${work.pending || 0}</td>
-           <td class="status-cell"><span class="status ${work.status}">${work.status}</span></td>
-           <td>
-             <button class="workdoneBtn" onclick="showMarkDoneModalPending('${work.id}', ${idx})">Mark as Done</button>
-             <button class="deleteBtn" onclick="deletePendingWork('${work.id}')">Delete</button>
-           </td>`;
+
+        // Order
+        const tdOrder = document.createElement('td');
+        tdOrder.textContent = idx + 1;
+        tr.appendChild(tdOrder);
+
+        // Description
+        const tdDesc = document.createElement('td');
+        tdDesc.textContent = work.description;
+        tr.appendChild(tdDesc);
+
+        // Received
+        const tdReceived = document.createElement('td');
+        tdReceived.textContent = work.received || 0;
+        tr.appendChild(tdReceived);
+
+        // Pending
+        const tdPending = document.createElement('td');
+        tdPending.textContent = work.pending || 0;
+        tr.appendChild(tdPending);
+
+        // Status
+        const tdStatus = document.createElement('td');
+        tdStatus.className = 'status-cell';
+        const statusSpan = document.createElement('span');
+        statusSpan.classList.add('status', work.status);
+        statusSpan.textContent = work.status;
+        tdStatus.appendChild(statusSpan);
+        tr.appendChild(tdStatus);
+
+        // Actions
+        const tdActions = document.createElement('td');
+        const workdoneBtn = document.createElement('button');
+        workdoneBtn.textContent = 'Mark as Done';
+        workdoneBtn.className = 'workdoneBtn';
+        workdoneBtn.onclick = () => showMarkDoneModalPending(work.id, idx);
+        tdActions.appendChild(workdoneBtn);
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.className = 'deleteBtn';
+        delBtn.onclick = () => deletePendingWork(work.id);
+        tdActions.appendChild(delBtn);
+        tr.appendChild(tdActions);
+
         pendingWorkList.appendChild(tr);
       });
     }
@@ -143,6 +208,7 @@ function renderTodaysDues() {
       renderPendingWorks();
     }
 
+    // --- Add Work Logic ---
     function showAmountModal(action, editId = null) {
       if (action === 'Done' || action === 'Pending') {
         if (!workInput.value.trim()) {
@@ -165,11 +231,13 @@ function renderTodaysDues() {
     closeBtn.onclick = function() {
       amountModal.style.display = 'none';
       currentEditId = null;
+      currentPendingIndex = null;
     };
     window.onclick = function(event) {
       if (event.target === amountModal) {
         amountModal.style.display = 'none';
         currentEditId = null;
+        currentPendingIndex = null;
       }
     };
 
@@ -187,10 +255,12 @@ function renderTodaysDues() {
         addWork(currentWorkDesc, 'Pending', received, pending);
         addPendingWork(currentWorkDesc, received, pending);
       } else if (currentAction === 'MarkDonePending') {
+        // For Pending Work section: replace in todayWorks at same index
         let pendingWorks = loadData(PENDING_WORK_KEY);
         let works = loadData(TODAY_WORK_KEY);
         let idx = pendingWorks.findIndex(w => w.id === currentEditId);
         if (idx !== -1) {
+          // Find the corresponding work in todayWorks by description
           let todayIdx = works.findIndex(w => w.description === pendingWorks[idx].description);
           if (todayIdx !== -1) {
             works[todayIdx] = {
@@ -200,7 +270,9 @@ function renderTodaysDues() {
               pending
             };
             saveData(TODAY_WORK_KEY, works);
-          } else {
+          }
+          // If not found, fallback: push to todayWorks (shouldn't happen if logic is correct)
+          else {
             works.push({
               id: Date.now() + Math.floor(Math.random() * 1000),
               description: pendingWorks[idx].description,
@@ -210,7 +282,9 @@ function renderTodaysDues() {
             });
             saveData(TODAY_WORK_KEY, works);
           }
+          // Add to dues if pending > 0
           if (pending > 0) addTodayDue(pendingWorks[idx].description, received, pending);
+          // Remove from pending
           pendingWorks.splice(idx, 1);
           saveData(PENDING_WORK_KEY, pendingWorks);
         }
@@ -218,6 +292,7 @@ function renderTodaysDues() {
       workInput.value = '';
       amountModal.style.display = 'none';
       currentEditId = null;
+      currentPendingIndex = null;
       renderAll();
     };
 
@@ -241,21 +316,25 @@ function renderTodaysDues() {
       renderAll();
     }
 
+    // --- Mark as Done Modal for Pending Work Section ---
     function showMarkDoneModalPending(id, idx) {
       currentEditId = id;
       currentAction = 'MarkDonePending';
+      currentPendingIndex = idx;
       receivedAmountInput.value = '';
       pendingAmountInput.value = '';
       amountModal.style.display = 'flex';
       receivedAmountInput.focus();
     }
 
+    // --- Today's Dues ---
     function addTodayDue(description, received, pending) {
       let dues = loadData(TODAY_DUES_KEY);
       dues.push({ description, received, pending });
       saveData(TODAY_DUES_KEY, dues);
     }
 
+    // --- Pending Work ---
     function addPendingWork(description, received, pending) {
       let pendingWorks = loadData(PENDING_WORK_KEY);
       pendingWorks.push({
@@ -275,57 +354,51 @@ function renderTodaysDues() {
       renderAll();
     }
 
-    // Used Items Section
+    // --- Items Used Section ---
     function loadStoreItems() { return loadData(STORE_KEY); }
     function saveStoreItems(items) { saveData(STORE_KEY, items); }
     function loadUsedItems() { return loadData(USED_ITEMS_KEY); }
     function saveUsedItems(items) { saveData(USED_ITEMS_KEY, items); }
     document.getElementById('itemsUsedForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const name = document.getElementById('usedItemName').value.trim();
-  const qty = Number(document.getElementById('usedItemQty').value);
-  if (!name) {
-    alert('Please enter item name.');
-    return;
-  }
-  if (isNaN(qty) || qty <= 0) {
-    alert('Please enter a valid quantity.');
-    return;
-  }
-  let storeItems = loadStoreItems();
-  const idx = storeItems.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
-  if (idx === -1) {
-    alert(`Item "${name}" not found in store.`);
-    return;
-  }
-  if (storeItems[idx].stock < qty) {
-    alert(`Not enough stock for "${name}". Available: ${storeItems[idx].stock}`);
-    return;
-  }
-  storeItems[idx].stock -= qty;
-  saveStoreItems(storeItems);
+      e.preventDefault();
+      const name = document.getElementById('usedItemName').value.trim();
+      const qty = Number(document.getElementById('usedItemQty').value);
+      if (!name) {
+        alert('Please enter item name.');
+        return;
+      }
+      if (isNaN(qty) || qty <= 0) {
+        alert('Please enter a valid quantity.');
+        return;
+      }
+      let storeItems = loadStoreItems();
+      const idx = storeItems.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
+      if (idx === -1) {
+        alert(`Item "${name}" not found in store.`);
+        return;
+      }
+      if (storeItems[idx].stock < qty) {
+        alert(`Not enough stock for "${name}". Available: ${storeItems[idx].stock}`);
+        return;
+      }
+      storeItems[idx].stock -= qty;
+      saveStoreItems(storeItems);
 
-  // Show popup if quantity is less than 2
-  if (storeItems[idx].stock < 2) {
-    alert(`Warning: Only ${storeItems[idx].stock} "${storeItems[idx].name}" left in store!`);
-  }
+      // Save used item
+      let usedItems = loadUsedItems();
+      const usedIdx = usedItems.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
+      if (usedIdx !== -1) {
+        usedItems[usedIdx].qty += qty;
+      } else {
+        usedItems.push({ name, qty });
+      }
+      saveUsedItems(usedItems);
 
-  // Save used item
-  let usedItems = loadUsedItems();
-  const usedIdx = usedItems.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
-  if (usedIdx !== -1) {
-    usedItems[usedIdx].qty += qty;
-  } else {
-    usedItems.push({ name, qty });
-  }
-  saveUsedItems(usedItems);
+      renderUsedItems();
+      this.reset();
+    });
 
-  renderUsedItems();
-  this.reset();
-});
-
-
-    // Complete Work Button Functionality
+// Complete Work Button Functionality
     const completeWorkBtn = document.getElementById('completeWorkBtn');
     const confirmationModal = document.getElementById('confirmationModal');
     const cancelBtn = document.querySelector('.cancel-btn');
